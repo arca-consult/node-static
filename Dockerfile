@@ -1,7 +1,7 @@
 FROM alpine:3@sha256:beefdbd8a1da6d2915566fde36db9db0b524eb737fc57cd1367effd16dc0d06d AS node_builder
 WORKDIR /node
 
-ENV NODE_VERSION=v20.x
+ARG NODE_VERSION=unspecified
 
 RUN apk add git python3 gcc g++ linux-headers make ninja
 

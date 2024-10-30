@@ -54,7 +54,8 @@ jobs:
           platforms: ${{ matrix.platform }}
           labels: ${{ steps.meta.outputs.labels }}
           outputs: type=image,name=${{ env.IMAGE_NAME }},push-by-digest=true,name-canonical=true,push=true
-      
+          build-args: |
+            NODE_VERSION=${{ github.ref_name }}
       - name: Export digest
         run: |
           mkdir -p /tmp/digests
