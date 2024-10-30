@@ -5,7 +5,7 @@ on:
     tags:
       - v*
 env:
-  IMAGE_NAME: arca-consult/node-static
+  IMAGE_NAME: ghcr.io/arca-consult/node-static
 
 jobs:
   build:
@@ -32,7 +32,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/${{ env.IMAGE_NAME }}
+          images: ${{ env.IMAGE_NAME }}
       
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
