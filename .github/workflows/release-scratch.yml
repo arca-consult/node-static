@@ -19,14 +19,6 @@ jobs:
       # with sigstore/fulcio when running outside of PRs.
       id-token: write
     steps:
-      - name: Docker meta
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ env.IMAGE_NAME }}
-          flavor: latest=false
-          tags: type=raw,value=${{ github.event.inputs.tag }}
-
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       
@@ -45,5 +37,5 @@ jobs:
         with:
           file: ./Dockerfile-scratch
           platforms: linux/amd64,linux/arm64,linux/arm/v6,linux/arm/v7
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: ${{ env.IMAGE_NAME }}:${{ github.event.inputs.tag }}
           push: true
