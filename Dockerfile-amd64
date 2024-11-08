@@ -20,14 +20,7 @@ RUN cd node && ./configure --verbose \
 
 RUN cd node && make -j$(nproc)
 
-RUN echo 'nobody:x:65534:65534:Nobody:/:' > /tmp/passwd
-
-FROM scratch AS runner
+FROM ghcr.io/arca-consult/scratch:v0.0.1 AS runner
 
 COPY --from=node_builder /node/node/node /node
-COPY --from=node_builder /tmp/passwd /etc/passwd
-COPY --from=node_builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
-COPY --from=node_builder /usr/share/zoneinfo /usr/share/zoneinfo
-
-USER 65534:65534
 ENTRYPOINT ["/node"]
