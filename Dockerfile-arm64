@@ -29,4 +29,5 @@ COPY --from=node_builder /tmp/passwd /etc/passwd
 COPY --from=node_builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
 COPY --from=node_builder /usr/share/zoneinfo /usr/share/zoneinfo
 
+USER 65534:65534
 ENTRYPOINT ["/node"]
