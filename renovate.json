@@ -1,3 +1,7 @@
 {
-  "extends": ["github>arca-consult/heimdall-renovate"]
+  "extends": ["https://raw.githubusercontent.com/arca-consult/heimdall-renovate/refs/heads/main/default.json"],
+  "hostRules": [{
+    "matchHost": "raw.githubusercontent.com",
+    "token": "{{ secrets.TOKEN_GITHUB_PRESET }}"
+  }]
 }

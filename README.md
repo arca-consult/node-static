@@ -33,3 +33,19 @@ ENV PORT=3000
 ENV HOSTNAME='0.0.0.0'
 CMD ["/app/server.js"]
 ```
+
+# scratch
+Scratch container with ssl certs, zoneinfo and a /etc/passwd file for user nobody with 65534:65534
+
+Filesystem:
+```
+├─ etc
+│  ├─ passwd
+│  └─ ssl
+│     └─ certs
+└─ usr
+   └─ share
+      └─ zoneinfo
+```
+
+Dispatch a workflow run for the scratch release action with tag: vx.x.x (v0.1.0) to release a new version
