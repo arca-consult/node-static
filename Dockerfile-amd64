@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM debian:bookworm AS node_builder
+FROM --platform=$BUILDPLATFORM debian:bookworm@sha256:e11072c1614c08bf88b543fcfe09d75a0426d90896408e926454e88078274fcb AS node_builder
 WORKDIR /node
 
 ARG NODE_VERSION
@@ -20,7 +20,7 @@ RUN cd node && ./configure --verbose \
 
 RUN cd node && make -j$(nproc)
 
-FROM ghcr.io/arca-consult/scratch:v0.0.1 AS runner
+FROM ghcr.io/arca-consult/scratch:v0.0.1@sha256:b9b0d504760dfbecfb519b74b97200f3e9dc484393d7fc14e24db41f760634bb AS runner
 
 COPY --from=node_builder /node/node/node /node
 ENTRYPOINT ["/node"]
