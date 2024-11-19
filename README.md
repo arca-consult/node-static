@@ -1,5 +1,5 @@
 # node-static
-Static compiled node inside container
+Static compiled node inside scratch container for amd64, arm64 and armv7
 
 Filesystem:
 ```
