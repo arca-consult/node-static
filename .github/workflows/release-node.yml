@@ -37,7 +37,7 @@ jobs:
           flavor: latest=false
       
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@8b562efa09ec1557a9e26f25a7c6292838acea94
+        uses: docker/setup-qemu-action@v3.2.0
         # still needed for adding ICU in arm and armv7
       
       - name: Set up Docker Buildx
