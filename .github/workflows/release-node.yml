@@ -16,6 +16,7 @@ jobs:
         platform:
           - amd64
           - arm64
+          - arm/v7
     permissions:
       contents: read
       packages: write
@@ -36,7 +37,8 @@ jobs:
           flavor: latest=false
       
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@49b3bc8e6bdd4a60e6116a5414239cba5943d3cf # v3.2.0
+        uses: docker/setup-qemu-action@49b3bc8e6bdd4a60e6116a5414239cba5943d3cf
+        # still needed for adding ICU in arm and armv7
       
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@c47758b77c9736f4b2ef4073d4d51994fabfe349 # v3.7.1
@@ -52,13 +54,11 @@ jobs:
         id: build
         uses: docker/build-push-action@4f58ea79222b3b9dc2c8bbdd6debcef730109a75 # v6.9.0
         with:
-          file: ./Dockerfile-${{ matrix.platform }}
+          file: ./Dockerfile-${{ env.PLATFORM_PAIR }}
           platforms: linux/${{ matrix.platform }}
           labels: ${{ steps.meta.outputs.labels }}
           outputs: type=image,name=${{ env.IMAGE_NAME }},push-by-digest=true,name-canonical=true,push=true
           build-args: NODE_VERSION=${{ github.ref_name }}
-          # cache-from: type=gha
-          # cache-to: type=gha,mode=max,ignore-error=true,timeout=30m
 
       - name: Export digest
         run: |

@@ -1,0 +1,26 @@
+FROM --platform=$BUILDPLATFORM debian:bookworm AS node_builder
+WORKDIR /node
+
+# ARG NODE_VERSION
+ARG NODE_VERSION=v20.18.0
+
+RUN apt update && apt install -y git make python3 binutils gcc-arm-linux-gnueabihf g++-arm-linux-gnueabihf binutils-arm-linux-gnueabihf
+
+RUN git clone --branch $NODE_VERSION --depth=1 --recursive --shallow-submodules https://github.com/nodejs/node
+
+ENV CC=arm-linux-gnueabihf-gcc
+ENV CXX=arm-linux-gnueabihf-g++
+
+RUN cd node && ./configure --verbose \
+    --fully-static --enable-static \
+    --dest-os=linux --dest-cpu=arm \
+    --without-corepack --without-npm --without-inspector \
+    --disable-single-executable-application --with-intl=small-icu \
+    --enable-lto --v8-options="--max-old-space-size=1024 --max-semi-space-size=128"
+
+RUN cd node && make -j$(nproc)
+
+FROM ghcr.io/arca-consult/scratch:v0.0.1 AS runner
+
+COPY --from=node_builder /node/node/node /node
+ENTRYPOINT ["/node"]
