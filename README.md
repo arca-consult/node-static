@@ -35,7 +35,7 @@ CMD ["/app/server.js"]
 ```
 
 # scratch
-Scratch container with ssl certs, zoneinfo and a /etc/passwd file for user nobody with 65534:65534
+Scratch container with ssl certs, zoneinfo and a /etc/passwd file for user nobody with 65534:65534, base for node-static
 
 Filesystem:
 ```
