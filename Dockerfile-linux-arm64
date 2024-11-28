@@ -22,7 +22,7 @@ RUN ./configure --verbose \
 RUN make -j$(nproc)
 
 RUN cd out/Release && file node && ls -lah node && \
-    strip node && \
+    aarch64-linux-gnu-strip node && \
     file node && ls -lah node
 
 FROM ghcr.io/arca-consult/scratch:v0.0.1@sha256:b9b0d504760dfbecfb519b74b97200f3e9dc484393d7fc14e24db41f760634bb AS runner

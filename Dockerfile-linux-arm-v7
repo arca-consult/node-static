@@ -22,7 +22,7 @@ RUN ./configure --verbose \
     --fully-static --enable-static \
     --dest-os=linux --dest-cpu=arm \
     --without-corepack --without-npm --without-inspector \
-    --disable-single-executable-application --without-intl \
+    --disable-single-executable-application --with-intl=small-icu \
     --v8-options="--max-old-space-size=1024 --max-semi-space-size=128"
 
 RUN  make -j$(nproc)
