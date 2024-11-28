@@ -4,7 +4,7 @@ WORKDIR /
 ARG NODE_VERSION
 # ARG NODE_VERSION=v20.18.0
 
-RUN apt update && apt install -y git make python3 binutils gcc g++
+RUN apt update && apt install -y git make python3 file binutils gcc g++
 
 ENV CC=gcc
 ENV CXX=g++
