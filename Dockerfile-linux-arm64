@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM debian:bookworm@sha256:10901ccd8d249047f9761845b4594f121edef079cfd8224edebd9ea726f0a7f6 AS node_builder
+FROM --platform=$BUILDPLATFORM debian:bookworm@sha256:321341744acb788e251ebd374aecc1a42d60ce65da7bd4ee9207ff6be6686a62 AS node_builder
 WORKDIR /
 
 ARG NODE_VERSION
