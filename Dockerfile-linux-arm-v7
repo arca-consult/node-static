@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM debian:bookworm@sha256:10901ccd8d249047f9761845b4594f121edef079cfd8224edebd9ea726f0a7f6 AS node_builder
+FROM --platform=$BUILDPLATFORM debian:12.9@sha256:10901ccd8d249047f9761845b4594f121edef079cfd8224edebd9ea726f0a7f6 AS node_builder
 WORKDIR /
 
 # ARG NODE_VERSION
@@ -26,6 +26,10 @@ RUN cd node && ./configure --verbose \
     --v8-options="--max-old-space-size=1024 --max-semi-space-size=128"
 
 RUN cd node && make -j$(nproc)
+
+RUN cd out/Release && file node && ls -lah node && \
+    /rpi-newer-crosstools/x64-gcc-12.3.0-glibc-2.28/arm-rpi-linux-gnueabihf/bin/arm-rpi-linux-gnueabihf-strip node && \
+    file node && ls -lah node
 
 FROM ghcr.io/arca-consult/scratch:v0.0.1@sha256:b9b0d504760dfbecfb519b74b97200f3e9dc484393d7fc14e24db41f760634bb AS runner
 
