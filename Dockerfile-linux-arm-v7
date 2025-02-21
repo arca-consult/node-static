@@ -4,14 +4,14 @@ WORKDIR /
 # ARG NODE_VERSION
 ARG NODE_VERSION=v20.18.0
 
-RUN apt update && apt install -y git make python3 gcc g++ gcc-multilib g++-multilib
+RUN apt update && apt install -y git make python3 file gcc g++ gcc-multilib g++-multilib
 
 RUN git clone --depth=1 https://github.com/rvagg/rpi-newer-crosstools.git
 
-ENV CC=/rpi-newer-crosstools/x64-gcc-12.3.0-glibc-2.28/arm-rpi-linux-gnueabihf/bin/arm-rpi-linux-gnueabihf-gcc
-ENV CXX=/rpi-newer-crosstools/x64-gcc-12.3.0-glibc-2.28/arm-rpi-linux-gnueabihf/bin/arm-rpi-linux-gnueabihf-g++
-ENV LD=/rpi-newer-crosstools/x64-gcc-12.3.0-glibc-2.28/arm-rpi-linux-gnueabihf/bin/arm-rpi-linux-gnueabihf-ld
-ENV AR=/rpi-newer-crosstools/x64-gcc-12.3.0-glibc-2.28/arm-rpi-linux-gnueabihf/bin/arm-rpi-linux-gnueabihf-ar
+ENV CC="/rpi-newer-crosstools/x64-gcc-12.3.0-glibc-2.28/arm-rpi-linux-gnueabihf/bin/arm-rpi-linux-gnueabihf-gcc -gdwarf-4"
+ENV CXX="/rpi-newer-crosstools/x64-gcc-12.3.0-glibc-2.28/arm-rpi-linux-gnueabihf/bin/arm-rpi-linux-gnueabihf-g++ -gdwarf-4"
+ENV LD="/rpi-newer-crosstools/x64-gcc-12.3.0-glibc-2.28/arm-rpi-linux-gnueabihf/bin/arm-rpi-linux-gnueabihf-ld"
+ENV AR="/rpi-newer-crosstools/x64-gcc-12.3.0-glibc-2.28/arm-rpi-linux-gnueabihf/bin/arm-rpi-linux-gnueabihf-ar"
 
 ENV CC_host="gcc -m32"
 ENV CXX_host="g++ -m32"
