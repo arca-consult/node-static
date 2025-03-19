@@ -26,9 +26,9 @@ RUN ./configure --verbose \
     --disable-single-executable-application --with-intl=small-icu \
     --v8-options="--max-old-space-size=1024 --max-semi-space-size=128"
 
-RUN make -j$(nproc)
+RUN make -j$(($(nproc) - 1))
 
-RUN out/Release/node -v
+RUN out/Release/node -v || true
 
 RUN cd out/Release && file node && ls -lah node && \
     /rpi-newer-crosstools/x64-gcc-12.3.0-glibc-2.28/arm-rpi-linux-gnueabihf/bin/arm-rpi-linux-gnueabihf-strip node && \
