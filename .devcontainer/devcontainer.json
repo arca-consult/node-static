@@ -1,11 +1,20 @@
 {
   "name": "Node-static dev container",
-  "image": "ghcr.io/arca-consult/devcontainer:1.4.0",
+  "image": "ghcr.io/arca-consult/devcontainer:2.1.1",
   "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
-  "remoteUser": "node",
+  "remoteUser": "user",
+  "containerEnv": {
+    "WORKSPACE_FOLDER": "${containerWorkspaceFolder}"
+  },
   "customizations": {
     "jetbrains": {
       "backend": "WebStorm"
+    },
+    "vscode": {
+      "extensions": [
+        "ms-azuretools.vscode-docker",
+        "github.vscode-github-actions"
+      ]
     }
   }
 }
