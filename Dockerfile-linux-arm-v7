@@ -15,8 +15,8 @@ ENV CXX="/rpi-newer-crosstools/x64-gcc-12.3.0-glibc-2.28/arm-rpi-linux-gnueabihf
 ENV LD="/rpi-newer-crosstools/x64-gcc-12.3.0-glibc-2.28/arm-rpi-linux-gnueabihf/bin/arm-rpi-linux-gnueabihf-ld"
 ENV AR="/rpi-newer-crosstools/x64-gcc-12.3.0-glibc-2.28/arm-rpi-linux-gnueabihf/bin/arm-rpi-linux-gnueabihf-ar"
 
-ENV CC_host="gcc -m32"
-ENV CXX_host="g++ -m32"
+ENV CC_host="gcc -m32 -gdwarf-4"
+ENV CXX_host="g++ -m32 -gdwarf-4"
 
 
 RUN ./configure --verbose \

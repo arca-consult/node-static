@@ -16,7 +16,9 @@ jobs:
         platform:
           - amd64
           - arm64
-#          - arm/v7
+          - arm/v7
+          - ppc64le
+          - s390x
     permissions:
       contents: read
       packages: write
