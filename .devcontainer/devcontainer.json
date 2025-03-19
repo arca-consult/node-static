@@ -1,6 +1,6 @@
 {
   "name": "Node-static dev container",
-  "image": "ghcr.io/arca-consult/devcontainer:1.4.0",
+  "image": "ghcr.io/arca-consult/devcontainer:2.1.1",
   "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
   "remoteUser": "node",
   "customizations": {
