@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM debian:12.9@sha256:10901ccd8d249047f9761845b4594f121edef079cfd8224edebd9ea726f0a7f6 AS node_builder
+FROM --platform=$BUILDPLATFORM debian:12.10@sha256:18023f131f52fc3ea21973cabffe0b216c60b417fd2478e94d9d59981ebba6af AS node_builder
 WORKDIR /
 
 # ARG NODE_VERSION
