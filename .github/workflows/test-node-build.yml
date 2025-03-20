@@ -1,4 +1,4 @@
-name: Release Node
+name: Test Node Release
 
 on:
   workflow_dispatch:
