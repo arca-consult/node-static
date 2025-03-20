@@ -28,7 +28,7 @@ RUN cd out/Release && file node && ls -lah node && \
     strip node && \
     file node && ls -lah node
 
-FROM ghcr.io/arca-consult/scratch:v0.0.1@sha256:b9b0d504760dfbecfb519b74b97200f3e9dc484393d7fc14e24db41f760634bb AS runner
+FROM ghcr.io/arca-consult/scratch:0.0.2 AS runner
 
 COPY --from=node_builder /node/out/Release/node /node
 ENTRYPOINT ["/node"]
