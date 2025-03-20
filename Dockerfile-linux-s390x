@@ -1,30 +1,41 @@
 FROM --platform=$BUILDPLATFORM debian:12.9@sha256:10901ccd8d249047f9761845b4594f121edef079cfd8224edebd9ea726f0a7f6 AS node_builder
 WORKDIR /
 
-# ARG NODE_VERSION
-ARG NODE_VERSION=v20.18.0
-
-RUN apt update && apt install -y  git make python3 file binutils gcc-s390x-linux-gnu g++-s390x-linux-gnu binutils-s390x-linux-gnu
-
+ARG NODE_VERSION
+# ARG NODE_VERSION=v20.18.0
+                                    
+RUN apt update && apt install -y git make python3 file binutils gcc-s390x-linux-gnu g++-s390x-linux-gnu binutils-s390x-linux-gnu
 
 RUN git clone --branch $NODE_VERSION --depth=1 --recursive --shallow-submodules https://github.com/nodejs/node
 WORKDIR /node
 
-ENV CC="s390x-linux-gnu-gcc -gdwarf-4"
-ENV CXX="s390x-linux-gnu-g++ -gdwarf-4"
+ENV CC="s390x-linux-gnu-gcc"
+ENV CXX="s390x-linux-gnu-g++"
+ENV LINK="s390x-linux-gnu-g++"
 ENV LD="s390x-linux-gnu-ld"
 ENV AR="s390x-linux-gnu-ar"
 
-# ENV CC_host="gcc -m32"
-# ENV CXX_host="g++ -m32"
-
+# without lto
 RUN ./configure --verbose \
     --fully-static --enable-static \
     --dest-os=linux --dest-cpu=s390x \
     --without-corepack --without-npm --without-inspector \
-    --disable-single-executable-application --with-intl=small-icu \
-    --enable-lto --v8-options="--max-old-space-size=1024 --max-semi-space-size=128"
+    --disable-single-executable-application --with-intl=none \
+    --v8-options="--max-old-space-size=1024 --max-semi-space-size=128"
+RUN make -j$(($(nproc) - 1))
 
+RUN ./configure --verbose \
+    --dest-os=linux --dest-cpu=s390x \
+    --without-corepack --without-npm --without-inspector \
+    --disable-single-executable-application --with-intl=none \
+    --v8-options="--max-old-space-size=1024 --max-semi-space-size=128"
+RUN make -j$(($(nproc) - 1))
+
+RUN ./configure --verbose \
+    --dest-os=linux --dest-cpu=s390x \
+    --without-corepack --without-npm --without-inspector \
+    --disable-single-executable-application --with-intl=small-icu \
+    --v8-options="--max-old-space-size=1024 --max-semi-space-size=128"
 RUN make -j$(($(nproc) - 1))
 
 RUN out/Release/node -v || true

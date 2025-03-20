@@ -18,7 +18,7 @@ ENV AR="/rpi-newer-crosstools/x64-gcc-12.3.0-glibc-2.28/arm-rpi-linux-gnueabihf/
 ENV CC_host="gcc -m32 -gdwarf-4"
 ENV CXX_host="g++ -m32 -gdwarf-4"
 
-
+# without lto
 RUN ./configure --verbose \
     --fully-static --enable-static \
     --dest-os=linux --dest-cpu=arm \

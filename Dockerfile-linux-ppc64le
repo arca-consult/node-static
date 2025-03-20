@@ -13,6 +13,7 @@ WORKDIR /node
 ENV CC=s390x-linux-gnu-gcc
 ENV CXX=s390x-linux-gnu-g++
 
+# without lto
 RUN ./configure --verbose \
     --fully-static --enable-static \
     --dest-os=linux --dest-cpu=s390x \
