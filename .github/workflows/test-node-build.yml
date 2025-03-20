@@ -1,0 +1,47 @@
+name: Release Node
+
+on:
+  workflow_dispatch:
+    inputs:
+      node-tag:
+        required: true
+        description: Github node tag
+      platform:
+        required: true
+        options:
+          - amd64
+          - arm64
+          - arm/v7
+          - ppc64le
+          - s390x
+        description: "Build platform (platform: linux/<xxx>)"
+        type: choice
+
+
+env:
+  IMAGE_NAME: ghcr.io/arca-consult/node-static
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Prepare
+        run: |
+          platform=linux/${{ inputs.platform }}
+          echo "PLATFORM_PAIR=${platform//\//-}" >> $GITHUB_ENV
+      
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@c47758b77c9736f4b2ef4073d4d51994fabfe349 # v3.7.1
+
+        # still needed for adding ICU in arm and armv7
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@29109295f81e9208d7d86ff1c6c12d2833863392 # v3.6.0
+      
+      - name: Build and push by digest
+        id: build
+        uses: docker/build-push-action@4f58ea79222b3b9dc2c8bbdd6debcef730109a75 # v6.9.0
+        with:
+          file: ./Dockerfile-${{ env.PLATFORM_PAIR }}
+          platforms: linux/${{ inputs.platform }}
+          labels: ${{ env.IMAGE_NAME }}:latest
+          build-args: NODE_VERSION=${{ inputs.node-tag }}
