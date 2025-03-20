@@ -22,6 +22,9 @@ env:
 
 jobs:
   build:
+    permissions:
+      contents: read
+      packages: read
     runs-on: ubuntu-latest
     steps:
       - name: Prepare
