@@ -4,19 +4,23 @@ WORKDIR /
 ARG NODE_VERSION
 # ARG NODE_VERSION=v20.18.0
                                     
-RUN apt update && apt install -y git make python3 file binutils gcc-s390x-linux-gnu g++-s390x-linux-gnu binutils-s390x-linux-gnu
+RUN apt update && apt install -y git make python3 file gcc g++ crossbuild-essential-s390x 
 
 RUN git clone --branch $NODE_VERSION --depth=1 --recursive --shallow-submodules https://github.com/nodejs/node
 WORKDIR /node
 
 ENV CC="s390x-linux-gnu-gcc"
 ENV CXX="s390x-linux-gnu-g++"
-ENV LINK="s390x-linux-gnu-g++"
 ENV LD="s390x-linux-gnu-ld"
 ENV AR="s390x-linux-gnu-ar"
 
+ENV CC_host="gcc"
+ENV CXX_host="g++"
+ENV LD_host="ld"
+ENV AR_host='ar'
+
 # without lto
-RUN ./configure --verbose \
+RUN ./configure --verbose --cross-compiling \
     --fully-static --enable-static \
     --dest-os=linux --dest-cpu=s390x \
     --without-corepack --without-npm --without-inspector \
@@ -24,19 +28,19 @@ RUN ./configure --verbose \
     --v8-options="--max-old-space-size=1024 --max-semi-space-size=128"
 RUN make -j$(($(nproc) - 1))
 
-RUN ./configure --verbose \
-    --dest-os=linux --dest-cpu=s390x \
-    --without-corepack --without-npm --without-inspector \
-    --disable-single-executable-application --with-intl=none \
-    --v8-options="--max-old-space-size=1024 --max-semi-space-size=128"
-RUN make -j$(($(nproc) - 1))
+# RUN ./configure --verbose --cross-compiling \
+#     --dest-os=linux --dest-cpu=s390x \
+#     --without-corepack --without-npm --without-inspector \
+#     --disable-single-executable-application --with-intl=none \
+#     --v8-options="--max-old-space-size=1024 --max-semi-space-size=128"
+# RUN make -j$(($(nproc) - 1))
 
-RUN ./configure --verbose \
-    --dest-os=linux --dest-cpu=s390x \
-    --without-corepack --without-npm --without-inspector \
-    --disable-single-executable-application --with-intl=small-icu \
-    --v8-options="--max-old-space-size=1024 --max-semi-space-size=128"
-RUN make -j$(($(nproc) - 1))
+# RUN ./configure --verbose --cross-compiling \
+#     --dest-os=linux --dest-cpu=s390x \
+#     --without-corepack --without-npm --without-inspector \
+#     --disable-single-executable-application --with-intl=small-icu \
+#     --v8-options="--max-old-space-size=1024 --max-semi-space-size=128"
+# RUN make -j$(($(nproc) - 1))
 
 RUN out/Release/node -v || true
 
