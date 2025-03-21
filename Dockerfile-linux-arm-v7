@@ -18,8 +18,8 @@ ENV CXX="arm-rpi-linux-gnueabihf-g++"
 ENV LD="arm-rpi-linux-gnueabihf-ld"
 ENV AR="arm-rpi-linux-gnueabihf-ar"
 
-ENV CC_host="gcc"
-ENV CXX_host="g++"
+ENV CC_host="gcc -m32"
+ENV CXX_host="g++ -m32"
 ENV LD_host="ld"
 ENV AR_host='ar'
 
