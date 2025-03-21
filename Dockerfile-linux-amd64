@@ -4,13 +4,15 @@ WORKDIR /
 ARG NODE_VERSION
 # ARG NODE_VERSION=v20.18.0
 
-RUN apt update && apt install -y git make python3 file binutils gcc g++
+RUN apt update && apt install -y git make python3 file gcc g++
 
 RUN git clone --branch $NODE_VERSION --depth=1 --recursive --shallow-submodules https://github.com/nodejs/node
 WORKDIR /node
 
-ENV CC=gcc
-ENV CXX=g++
+ENV CC="gcc"
+ENV CXX="g++"
+ENV LD="ld"
+ENV AR='ar'
 
 RUN ./configure --verbose \
     --fully-static --enable-static \
