@@ -34,7 +34,7 @@ RUN cd out/Release && file node && ls -lah node && \
     /rpi-newer-crosstools/x64-gcc-12.3.0-glibc-2.28/arm-rpi-linux-gnueabihf/bin/arm-rpi-linux-gnueabihf-strip node && \
     file node && ls -lah node
 
-FROM ghcr.io/arca-consult/scratch:0.0.2 AS runner
+FROM ghcr.io/arca-consult/scratch:0.0.2@sha256:ea3be3c3643833df48d7883c3f0caa9b891087d3b88ff553e2f3a928d7c267bd AS runner
 
 COPY --from=node_builder /node/out/Release/node /node
 ENTRYPOINT ["/node"]
