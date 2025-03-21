@@ -6,6 +6,7 @@ on:
       node-tag:
         required: true
         description: Github node tag (vxx.xx.xx)
+        default: v20.18.0
       platform:
         required: true
         options:

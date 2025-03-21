@@ -4,16 +4,23 @@ WORKDIR /
 ARG NODE_VERSION
 # ARG NODE_VERSION=v20.18.0
 
-RUN apt update && apt install -y git make python3 file gcc-aarch64-linux-gnu g++-aarch64-linux-gnu binutils-aarch64-linux-gnu
-
+RUN apt update && apt install -y git make python3 file gcc g++ gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
 
 RUN git clone --branch $NODE_VERSION --depth=1 --recursive --shallow-submodules https://github.com/nodejs/node
 WORKDIR /node
 
-ENV CC=aarch64-linux-gnu-gcc
-ENV CXX=aarch64-linux-gnu-g++
+ENV CC="aarch64-linux-gnu-gcc"
+ENV CXX="aarch64-linux-gnu-g++"
+ENV LD="aarch64-linux-gnu-ld"
+ENV AR="aarch64-linux-gnu-ar"
 
-RUN ./configure --verbose \
+ENV CC_host="gcc"
+ENV CXX_host="g++"
+ENV LD_host="ld"
+ENV AR_host='ar'
+
+# with lto
+RUN ./configure --verbose --cross-compiling \
     --fully-static --enable-static \
     --dest-os=linux --dest-cpu=arm64 \
     --without-corepack --without-npm --without-inspector \

@@ -4,22 +4,26 @@ WORKDIR /
 ARG NODE_VERSION
 # ARG NODE_VERSION=v20.18.0
 
-RUN apt update && apt install -y git make python3 file gcc g++ gcc-multilib g++-multilib
+RUN apt update && apt install -y git make python3 file gcc g++
 
 RUN git clone --depth=1 https://github.com/rvagg/rpi-newer-crosstools.git
+ENV PATH="$PATH:/rpi-newer-crosstools/x64-gcc-12.3.0-glibc-2.28/arm-rpi-linux-gnueabihf/bin/"
+
 RUN git clone --branch $NODE_VERSION --depth=1 --recursive --shallow-submodules https://github.com/nodejs/node
 WORKDIR /node
 
-ENV CC="/rpi-newer-crosstools/x64-gcc-12.3.0-glibc-2.28/arm-rpi-linux-gnueabihf/bin/arm-rpi-linux-gnueabihf-gcc -gdwarf-4"
-ENV CXX="/rpi-newer-crosstools/x64-gcc-12.3.0-glibc-2.28/arm-rpi-linux-gnueabihf/bin/arm-rpi-linux-gnueabihf-g++ -gdwarf-4"
-ENV LD="/rpi-newer-crosstools/x64-gcc-12.3.0-glibc-2.28/arm-rpi-linux-gnueabihf/bin/arm-rpi-linux-gnueabihf-ld"
-ENV AR="/rpi-newer-crosstools/x64-gcc-12.3.0-glibc-2.28/arm-rpi-linux-gnueabihf/bin/arm-rpi-linux-gnueabihf-ar"
+ENV CC="arm-rpi-linux-gnueabihf-gcc"
+ENV CXX="arm-rpi-linux-gnueabihf-g++"
+ENV LD="arm-rpi-linux-gnueabihf-ld"
+ENV AR="arm-rpi-linux-gnueabihf-ar"
 
-ENV CC_host="gcc -m32 -gdwarf-4"
-ENV CXX_host="g++ -m32 -gdwarf-4"
+ENV CC_host="gcc"
+ENV CXX_host="g++"
+ENV LD_host="ld"
+ENV AR_host='ar'
 
 # without lto
-RUN ./configure --verbose \
+RUN ./configure --verbose --cross-compiling \
     --fully-static --enable-static \
     --dest-os=linux --dest-cpu=arm \
     --without-corepack --without-npm --without-inspector \
@@ -31,7 +35,7 @@ RUN make -j$(($(nproc) - 1))
 RUN out/Release/node -v || true
 
 RUN cd out/Release && file node && ls -lah node && \
-    /rpi-newer-crosstools/x64-gcc-12.3.0-glibc-2.28/arm-rpi-linux-gnueabihf/bin/arm-rpi-linux-gnueabihf-strip node && \
+    arm-rpi-linux-gnueabihf-strip node && \
     file node && ls -lah node
 
 FROM ghcr.io/arca-consult/scratch:0.0.2 AS runner
