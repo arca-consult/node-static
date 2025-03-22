@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM docker.io/debian:trixie AS node_builder
+FROM --platform=$BUILDPLATFORM docker.io/debian:trixie@sha256:ad1a494fd8dac6ff85bbc76e03edf98b3064a096bf79f641f91316e28d478f2d AS node_builder
 WORKDIR /
 
 ARG NODE_VERSION
